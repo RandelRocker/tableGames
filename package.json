@@ -11,7 +11,7 @@
 		"grunt-contrib-clean": "latest",
 		"grunt-contrib-copy": "latest",
 		"grunt-contrib-connect": "latest",
-		"grunt-contrib-sass": "latest",
+		"grunt-contrib-compass": "latest",
 		"grunt-concurrent": "latest"
 	}
 }

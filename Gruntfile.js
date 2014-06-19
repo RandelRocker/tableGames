@@ -22,18 +22,17 @@ module.exports = function(grunt) {
 
 		clean: {
 			main: ['app'],
-			all: ['app', '.sass-cache', 'node_modules']
+			all: ['app', '.sass-cache']
 		},
 
-		sass: {
-			dist: {
-				files: [{
-					expand: true,
-					cwd: 'src/css',
-					src: ['**/*.scss'],
-					dest: 'app/css',
-					ext: '.css'
-				}]
+		compass: {
+			main: {
+				options: {
+					outputStyle: 'expanded',
+					sassDir: 'src/styles',
+					cssDir: 'app/css',
+					environment: 'production'
+				}
 			}
 		},
 
@@ -76,8 +75,8 @@ module.exports = function(grunt) {
 
 		watch: {
 			css: {
-				files: ['src/css/**/*.scss'],
-				tasks: ['sass']
+				files: ['src/style/**/*.scss'],
+				tasks: ['compass:main']
 			},
 			html: {
 				files: ['src/html/**/*.jade'],
@@ -105,10 +104,10 @@ module.exports = function(grunt) {
 				limit: 10
 			},
 			build: {
-				tasks: ['sass', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
+				tasks: ['compass:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
 			},
 			watch: {
-				tasks: ['watch:sass', 'watch:html', 'watch:templates', 'watch:js', 'watch:livereload']
+				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:livereload']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'connect:main']
@@ -119,7 +118,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-jade');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-copy');
