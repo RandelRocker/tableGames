@@ -89,12 +89,6 @@ module.exports = function(grunt) {
 			js: {
 				files: ['src/js/**/*.js'],
 				tasks: ['copy:main']
-			},
-			livereload: {
-				files: ['app/**'],
-				options: {
-					livereload: true
-				}
 			}
 		},
 
@@ -107,7 +101,7 @@ module.exports = function(grunt) {
 				tasks: ['compass:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
 			},
 			watch: {
-				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:livereload']
+				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'connect:main']
