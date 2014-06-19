@@ -108,7 +108,7 @@ module.exports = function(grunt) {
 				tasks: ['sass', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
 			},
 			watch: {
-				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:livereload']
+				tasks: ['watch:sass', 'watch:html', 'watch:templates', 'watch:js', 'watch:livereload']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'connect:main']
