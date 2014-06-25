@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 			},
 			templates: {
 				files: {
-					'root/js/templates.js': 'src/templates/**/*.jade'
+					'app/js/templates.js': 'src/templates/**/*.jade'
 				},
 				options: {
 					amd: true,
