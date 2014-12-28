@@ -27,13 +27,14 @@ module.exports = function(grunt) {
 			all: ['app', '.sass-cache']
 		},
 
-		compass: {
+		less: {
 			main: {
 				options: {
-					outputStyle: 'expanded',
-					sassDir: 'src/styles',
-					cssDir: 'app/css',
-					environment: 'production'
+					paths: ['src/styles'],
+					compress: true
+				},
+				files: {
+					'app/css/main.css': ['src/styles/main.less'] // specify multiple files to concat
 				}
 			}
 		},
@@ -77,8 +78,8 @@ module.exports = function(grunt) {
 
 		watch: {
 			css: {
-				files: ['src/styles/**/*.scss'],
-				tasks: ['compass:main']
+				files: ['src/styles/**/*.less'],
+				tasks: ['less:main']
 			},
 			html: {
 				files: ['src/html/**/*.jade'],
@@ -100,7 +101,7 @@ module.exports = function(grunt) {
 				limit: 10
 			},
 			build: {
-				tasks: ['compass:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
+				tasks: ['less:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
 			},
 			watch: {
 				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js']
@@ -114,7 +115,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-compass');
+	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-jade');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-copy');
