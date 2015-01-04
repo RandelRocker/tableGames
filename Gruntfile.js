@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 			},
 			lib: {
 				expand: true,
-				cwd: 'lib',
+				cwd: 'src/lib',
 				src: ['**'],
 				dest: 'app/lib'
 			}
