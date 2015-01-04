@@ -33,9 +33,15 @@ module.exports = function(grunt) {
 					paths: ['src/styles'],
 					compress: true
 				},
-				files: {
-					'app/css/main.css': ['src/styles/main.less'] // specify multiple files to concat
-				}
+				files: [
+					{
+						expand: true,
+						cwd: 'src/styles',
+						src: ['*.less'],
+						dest: 'app/css/',
+						ext: '.css'
+					}
+				]
 			}
 		},
 

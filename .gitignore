@@ -12,9 +12,6 @@ node_modules
 # Grunt generated root
 app
 
-#saas cache
-.sass-cache
-
 # Idea workspace
 *.iws
 .idea

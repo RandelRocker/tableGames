@@ -1,4 +1,6 @@
-gruntPackage
+This is table games app for online playing with friends
 ============
 
-default grunt package
+npm install -g grunt-cli
+npm install
+grunt
