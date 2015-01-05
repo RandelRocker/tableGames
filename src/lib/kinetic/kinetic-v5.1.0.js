@@ -7054,15 +7054,17 @@ var Kinetic = {};
         this._dragCleanup();
 
         if (this.getClassName() === 'Stage') {
-            this.on('contentMousedown.kinetic contentTouchstart.kinetic', function(evt) {
-                if(!Kinetic.DD.node) {
+            this.on('contentMousedown.kinetic contentTouchstart.kinetic', function (evt) {
+                if (!Kinetic.DD.node && evt.evt.button == 1) {
+                    document.body.style.cursor = 'move';
                     that.startDrag(evt);
                 }
             });
         }
         else {
-            this.on('mousedown.kinetic touchstart.kinetic', function(evt) {
-                if(!Kinetic.DD.node) {
+            this.on('mousedown.kinetic touchstart.kinetic', function (evt) {
+                if (!Kinetic.DD.node) {
+                    document.body.style.cursor = 'move';
                     that.startDrag(evt);
                 }
             });
@@ -9481,6 +9483,7 @@ var Kinetic = {};
                     }
                 }
                 // content events
+                document.body.style.cursor = 'default';
                 this._fire(CONTENT_MOUSEUP, {evt: evt});
                 if (Kinetic.listenClickTap) {
                     this._fire(CONTENT_CLICK, {evt: evt});

@@ -98,6 +98,10 @@ module.exports = function(grunt) {
 			js: {
 				files: ['src/js/**/*.js'],
 				tasks: ['copy:main']
+			},
+			lib: {
+				files: ['src/lib/**/*.js'],
+				tasks: ['copy:lib']
 			}
 		},
 
@@ -110,7 +114,7 @@ module.exports = function(grunt) {
 				tasks: ['less:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
 			},
 			watch: {
-				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js']
+				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:lib']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'connect:main']
