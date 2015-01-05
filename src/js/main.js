@@ -12,27 +12,8 @@ define('main', ['jquery', 'canvas', 'data.class'],
 				draggable: true
 			});
 
-			var grid = canvas.layer();
+			var grid = canvas.grid();
 
-			for (var i = 0; i < canvas.width; i++) {
-				var I = i * 40;
-				var l = new Kinetic.Line({
-					stroke: "black",
-					strokeWidth: .1,
-					points: [I, 0, I, canvas.height]
-				});
-				grid.add(l);
-			}
-
-			for (var j = 0; j < canvas.height; j++) {
-				var J = j * 40;
-				var l2 = new Kinetic.Line({
-					stroke: "black",
-					strokeWidth: .1,
-					points: [0, J, canvas.width, J]
-				});
-				grid.add(l2);
-			}
 			stage.add(grid);
 			layer = canvas.layer();
 
@@ -56,7 +37,7 @@ define('main', ['jquery', 'canvas', 'data.class'],
 			stage.add(layer);
 
 			stage.on('contentMouseup', function(e){
-				data.set('stage', stage.toJSON());
+				self.saveStage(stage);
 			});
 		});
 	});
