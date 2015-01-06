@@ -140,4 +140,4 @@ module.exports = function(grunt) {
 	grunt.registerTask('test', 'jshint');
 	grunt.registerTask('default', ['clean:main', 'concurrent:build', 'concurrent:run']);
 	grunt.registerTask('cleanAll', 'clean:all');
-}
+};

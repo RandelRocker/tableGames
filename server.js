@@ -1,7 +1,9 @@
 #!/bin/env node
 //  OpenShift sample Node application
-var express = require('express');
-var fs      = require('fs');
+var express = require('express')(),
+    http = require('http').Server(express),
+    fs      = require('fs'),
+    io      = require('socket.io')(http);
 
 
 /**
@@ -93,7 +95,7 @@ var SampleApp = function() {
      */
     self.initializeServer = function() {
         self.createRoutes();
-        self.app = express();
+        self.app = express;
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
@@ -119,7 +121,7 @@ var SampleApp = function() {
      */
     self.start = function() {
         //  Start the app on the specific interface (and port).
-        self.app.listen(self.port, self.ipaddress, function() {
+        http.listen(self.port, self.ipaddress, function() {
             console.log('%s: Node server started on %s:%d ...',
                         Date(Date.now() ), self.ipaddress, self.port);
         });
@@ -127,7 +129,12 @@ var SampleApp = function() {
 
 };   /*  Sample Application.  */
 
-
+io.on('connection', function(socket){
+    console.log('user connected');
+    socket.on('stage', function(msg){
+        socket.broadcast.emit('stage', msg);
+    });
+});
 
 /**
  *  main():  Main code.

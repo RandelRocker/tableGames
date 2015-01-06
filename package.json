@@ -13,16 +13,15 @@
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-less": "latest",
     "grunt-contrib-watch": "latest",
-    "grunt-execute": "latest",
-    "express": "latest"
+    "grunt-execute": "latest"
   },
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
-
   "dependencies": {
-    "express": "latest"
+    "express": "latest",
+    "socket.io": "latest"
   },
   "private": true,
   "main": "server.js"

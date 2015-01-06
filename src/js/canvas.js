@@ -34,7 +34,7 @@ define('canvas', ['jquery', 'fabric', 'data.class'],
 				stage.on({
 					'object:modified': function (e) {
 						e.target.opacity = 1;
-						self.saveStage(stage)
+						self.saveStage(stage);
 					},
 					'object:moving': function (e) {
 						e.target.opacity = 0.4;
@@ -49,6 +49,10 @@ define('canvas', ['jquery', 'fabric', 'data.class'],
 				$(window).on('mouseup.canvasPan', function(e) {
 					$(window).off('mousemove.canvasPan');
 				});
+
+				$(document).on('stage-response', function(event, data) {
+					self.$stage.loadFromJSON(data.json, self.$stage.renderAll.bind(self.$stage));
+				})
 			},
 
 			initStage: function (callback) {
@@ -65,7 +69,10 @@ define('canvas', ['jquery', 'fabric', 'data.class'],
 			},
 
 			saveStage: function (stage) {
-				data.set('stage', JSON.stringify(stage.toJSON()));
+				var stageJson = JSON.stringify(stage.toJSON());
+
+				data.set('stage', stageJson);
+				$(document).triggerHandler('saving-stage', {stage: stage, stageJson: stageJson});
 			},
 
 			bindStage: function (stage) {

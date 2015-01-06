@@ -1,5 +1,5 @@
-define('main', ['jquery', 'canvas', 'data.class'],
-	function($, canvas, data){
+define('main', ['jquery', 'socket.io', 'canvas'],
+	function($, socket, canvas){
 
 		canvas.initStage(function(){
 			canvas.$stage = canvas.stage('container');

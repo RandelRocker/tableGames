@@ -3,7 +3,8 @@ require.config({
 	paths: {
 		jade: '../lib/jade/runtime',
 		jquery: '../lib/jquery-2.1.1.min',
-		fabric: '../lib/fabric'
+		fabric: '../lib/fabric',
+		socket: '../socket.io/socket.io.js'
 	},
 	shim: {
 		'fabric': {
