@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 		},*/
 		execute: {
 			target: {
-				src: ['server.js']
+				src: ['main.js']
 			}
 		},
 
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
 		clean: {
 			main: ['app'],
-			all: ['app', '.sass-cache']
+			all: ['app', '.sass-cache', 'socket.js', 'server.js', 'main.js']
 		},
 
 		less: {
@@ -84,6 +84,12 @@ module.exports = function(grunt) {
 				cwd: 'src/lib',
 				src: ['**'],
 				dest: 'app/lib'
+			},
+			server: {
+				expand: true,
+				cwd: 'src/server',
+				src: ['**'],
+				dest: './'
 			}
 		},
 
@@ -104,6 +110,10 @@ module.exports = function(grunt) {
 				files: ['src/js/**/*.js'],
 				tasks: ['copy:main']
 			},
+			serverJs: {
+				files: ['src/server/**/*.js'],
+				tasks: ['copy:server']
+			},
 			lib: {
 				files: ['src/lib/**/*.js'],
 				tasks: ['copy:lib']
@@ -116,10 +126,10 @@ module.exports = function(grunt) {
 				limit: 10
 			},
 			build: {
-				tasks: ['less:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
+				tasks: ['less:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib', 'copy:server']
 			},
 			watch: {
-				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:lib']
+				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:lib', 'watch:serverJs']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'execute:target']
