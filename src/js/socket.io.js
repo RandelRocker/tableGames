@@ -1,5 +1,5 @@
-define('socket.io', ['socket'],
-	function(io){
+define('socket.io', ['jquery', 'socket'],
+	function($, io){
 		var socket = {
 			socket: io(),
 
