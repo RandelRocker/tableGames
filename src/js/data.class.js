@@ -1,5 +1,5 @@
-define('data.class', ['jquery', 'kinetic'],
-	function($, Kinetic){
+define('data.class', ['jquery'],
+	function($){
 		'use strict';
 
 		return {
@@ -11,7 +11,7 @@ define('data.class', ['jquery', 'kinetic'],
 				return localStorage.getItem(key);
 			},
 
-			getStage: function() {
+			getStageJSON: function() {
 				return this.get('stage');
 			}
 		}

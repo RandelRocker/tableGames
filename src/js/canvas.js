@@ -1,82 +1,147 @@
-define('canvas', ['jquery', 'kinetic', 'data.class'],
-	function ($, Kinetic, data) {
+define('canvas', ['jquery', 'fabric', 'data.class'],
+	function ($, fabric, data) {
 		'use strict';
 
 		return {
 			stageId: 'container',
-			width: $(window).innerWidth(),
-			height: $(window).innerHeight(),
+			$stage: null,
+			stageZoom: 20,
+			panX: 0,
+			panY: 0,
+			config: {
+				stage: {
+					width: $(window).innerWidth(),
+					height: $(window).innerHeight(),
+					hoverCursor: 'pointer',
+					centeredScaling: true,
+					selection: true
+				},
+				grid: {
+					lineWidth: 3000,
+					lineHeight: 2520,
+					cellSize: 40,
+					fill: 'black',
+					stroke: 'black',
+					strokeWidth: 1,
+					opacity: 0.2,
+					selectable: false
+				}
+			},
+
+			bindEvents: function (stage) {
+				var self = this;
+
+				stage.on({
+					'object:modified': function (e) {
+						e.target.opacity = 1;
+						self.saveStage(stage)
+					},
+					'object:moving': function (e) {
+						e.target.opacity = 0.4;
+					}
+				});
+
+				$(window).on("DOMMouseScroll", this._mouseWheel.bind(this), false);
+				window.onmousewheel = document.onmousewheel = this._mouseWheel.bind(this);
+
+				$(window).on('mousedown.canvasPan',this._mouseDown.bind(this));
+
+				$(window).on('mouseup.canvasPan', function(e) {
+					$(window).off('mousemove.canvasPan');
+				});
+			},
 
 			initStage: function (callback) {
-				var stageJSON = data.getStage(),
-					stage;
+				var stageJSON = data.getStageJSON();
 
 				if (stageJSON) {
-					stage = Kinetic.Node.create(stageJSON, this.stageId);
-					this.bindStage(stage);
-
-					return stage;
+					this.$stage = this.stage('container');
+					this.$stage.loadFromJSON(stageJSON, this.$stage.renderAll.bind(this.$stage));
+					this.bindEvents(this.$stage);
+					return this.$stage;
 				}
 
 				if ($.isFunction(callback)) callback();
 			},
 
 			saveStage: function (stage) {
-				/*data.set('stage', stage.toJSON());*/
+				data.set('stage', JSON.stringify(stage.toJSON()));
 			},
 
 			bindStage: function (stage) {
 				var self = this;
 
-				stage.on('contentMouseup', function () {
-					self.saveStage(stage)
+				stage.on({
+					'object:modified': function (e) {
+						e.target.opacity = 1;
+						self.saveStage(stage)
+					},
+					'object:moving': function (e) {
+						e.target.opacity = 0.4;
+					}
 				});
 			},
 
-			grid: function(config) {
-				var gridLayer = this.layer();
+			grid: function (stage, config) {
 
-				config = {
-					width: 2000 || config.width,
-					height: 2000 || config.height,
-					cellSize: 40 || config.cellSize
-				};
+				config = $.extend(true, this.config.grid, config);
 
-				for (var i = 0; i < config.width + 1; i += config.cellSize) {
-					var hLine = this.line({
-						stroke: "black",
-						strokeWidth: .1 || config.strokeWidth,
-						points: [i, 0, i, config.height]
-					});
-					gridLayer.add(hLine);
+				for (var i = 0; i < config.lineWidth + 1; i += config.cellSize) {
+					var hLine = this.line([i, 0, i, config.lineHeight], config);
+					stage.add(hLine);
 				}
 
-				for (var j = 0; j < config.height + 1; j += config.cellSize) {
-					var vLine = this.line({
-						stroke: "black",
-						strokeWidth: .1 || config.strokeWidth,
-						points: [0, j, config.width, j]
-					});
-					gridLayer.add(vLine);
+				for (var j = 0; j < config.lineHeight + 1; j += config.cellSize) {
+					var vLine = this.line([0, j, config.lineWidth, j], config);
+					stage.add(vLine);
 				}
-
-				return gridLayer;
 			},
 
-			stage: function (config) {
-				return new Kinetic.Stage(config);
-			},
-
-			layer: function (config) {
-				return new Kinetic.Layer(config);
+			stage: function (canvasId, config) {
+				config = $.extend(true, this.config.stage, config);
+				return new fabric.Canvas(canvasId, config);
 			},
 
 			rect: function (config) {
-				return new Kinetic.Rect(config);
+				return new fabric.Rect(config);
 			},
 
-			line: function (config) {
-				return new Kinetic.Line(config);
+			line: function (coord, config) {
+				return new fabric.Line(coord, config);
+			},
+
+			_mouseDown: function(e) {
+				if (e.button != 1) {
+					return;
+				}
+
+				this.$stage.setCursor('move');
+				this.panX = e.clientX - this.$stage.viewportTransform[4];
+				this.panY = e.clientY - this.$stage.viewportTransform[5];
+				$(window).on('mousemove.canvasPan',this._mouseMove.bind(this));
+			},
+
+			_mouseMove: function(e) {
+				if (e.button == 1) {
+					var dx = this.panX - e.clientX,
+						dy = this.panY - e.clientY;
+					this.$stage.setCursor('move');
+					this.$stage.absolutePan({x: dx, y: dy});
+					this.$stage.renderAll.bind(this.$stage);
+				}
+			},
+
+			_mouseWheel: function (event) {
+				var direction = ((event.wheelDelta) ? event.wheelDelta / 120 : event.detail / -3) || false;
+
+				if (direction) {
+					event.preventDefault();
+					event.returnValue = false;
+
+					var zoom = this.$stage.getZoom() + direction / this.stageZoom;
+					this.$stage.setZoom(zoom, {x: event.clientX, y: event.clientY});
+					this.$stage.renderAll.bind(this.$stage);
+				}
 			}
 		}
 	});

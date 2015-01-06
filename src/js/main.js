@@ -1,43 +1,22 @@
 define('main', ['jquery', 'canvas', 'data.class'],
 	function($, canvas, data){
-		var stage,
-			layer,
-			rect;
 
 		canvas.initStage(function(){
-			stage = canvas.stage({
-				container: 'container',
-				width: canvas.width,
-				height: canvas.height,
-				draggable: true
-			});
+			canvas.$stage = canvas.stage('container');
 
-			var grid = canvas.grid();
+			canvas.grid(canvas.$stage);
 
-			stage.add(grid);
-			layer = canvas.layer();
-
-			rect = canvas.rect({
-				x: 289,
-				y: 100,
-				width: 60,
+			var rect = canvas.rect({
+				left: 289,
+				top: 100,
+				fill: 'rgb(255,128,128)',
+				width: 90,
 				height: 150,
-				offset: {x:100, y:10},
-				fill: '#fff',
-				stroke: 'black',
-				strokeWidth: 1,
-				id: 'test',
-				draggable: true
+				strokeWidth: 2,
+				hasControls: false
 			});
 
-			// add the shape to the layer
-			layer.add(rect);
-
-			// add the layer to the stage
-			stage.add(layer);
-
-			stage.on('contentMouseup', function(e){
-				self.saveStage(stage);
-			});
+			canvas.bindEvents(canvas.$stage);
+			canvas.$stage.add(rect);
 		});
 	});
