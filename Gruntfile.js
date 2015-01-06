@@ -5,13 +5,18 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-		connect: {
+		/*connect: {
 			main: {
 				options: {
 					port: 1000,
 					keepalive: true,
 					base: 'app'
 				}
+			}
+		},*/
+		execute: {
+			target: {
+				src: ['server.js']
 			}
 		},
 
@@ -117,7 +122,7 @@ module.exports = function(grunt) {
 				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:lib']
 			},
 			run: {
-				tasks: ['concurrent:watch', 'connect:main']
+				tasks: ['concurrent:watch', 'execute:target']
 			}
 		}
 	});
@@ -130,6 +135,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-execute');
 
 	grunt.registerTask('test', 'jshint');
 	grunt.registerTask('default', ['clean:main', 'concurrent:build', 'concurrent:run']);

@@ -7,11 +7,23 @@
     "grunt-cli": "latest",
     "grunt-concurrent": "latest",
     "grunt-contrib-clean": "latest",
-    "grunt-contrib-less": "latest",
     "grunt-contrib-connect": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-contrib-jade": "latest",
     "grunt-contrib-jshint": "latest",
-    "grunt-contrib-watch": "latest"
-  }
+    "grunt-contrib-less": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-execute": "latest",
+    "express": "latest"
+  },
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+
+  "dependencies": {
+    "express": "latest"
+  },
+  "private": true,
+  "main": "server.js"
 }
