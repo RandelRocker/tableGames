@@ -94,7 +94,7 @@ module.exports = function () {
 		 */
 		start: function () {
 			//  Start the app on the specific interface (and port).
-			http.listen(this.port, this.ipaddress, function () {
+			http.listen(this.port, function () {
 				console.log('Node server started on %s:%d ...' + this.port);
 			});
 		}
