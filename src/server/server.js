@@ -25,14 +25,7 @@ module.exports = function () {
 		 */
 		setupVariables: function () {
 			//  Set the environment variables we need.
-			this.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
-			this.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-
-			if (typeof this.ipaddress === "undefined") {
-				//  Log errors on OpenShift but continue w/ 127.0.0.1 - this
-				//  allows us to run/test the app locally.
-				this.ipaddress = "127.0.0.1";
-			}
+			this.port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT|| 8080;
 		},
 
 		/**
@@ -102,8 +95,7 @@ module.exports = function () {
 		start: function () {
 			//  Start the app on the specific interface (and port).
 			http.listen(this.port, this.ipaddress, function () {
-				console.log('%s: Node server started on %s:%d ...',
-					Date(Date.now()), this.ipaddress, this.port);
+				console.log('Node server started on %s:%d ...' + this.port);
 			});
 		}
 	}
