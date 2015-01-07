@@ -14,8 +14,3 @@ node_modules
 *.iws
 .idea
 *.iml
-
-# server file
-sever.js
-main.js
-socket.js
