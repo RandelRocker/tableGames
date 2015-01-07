@@ -15,14 +15,18 @@
     "grunt-contrib-watch": "latest",
     "grunt-execute": "latest"
   },
+  "scripts": {
+    "start": "node main.js"
+  },
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
   "dependencies": {
-    "express": "latest",
+    "express": "~4.9.x",
+    "grunt": "latest",
+    "grunt-cli": "latest",
     "socket.io": "latest"
   },
-  "private": true,
   "main": "main.js"
 }
