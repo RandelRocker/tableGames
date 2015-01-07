@@ -26,7 +26,7 @@ module.exports = function () {
 		setupVariables: function () {
 			//  Set the environment variables we need.
 			this.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
-			this.port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+			this.port = process.env.PORT || 8080;
 
 			if (typeof this.ipaddress === "undefined") {
 				//  Log errors on OpenShift but continue w/ 127.0.0.1 - this
