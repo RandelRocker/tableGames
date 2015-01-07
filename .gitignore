@@ -9,15 +9,8 @@ build/Release
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules
 
-# Grunt generated root
-app
 
 # Idea workspace
 *.iws
 .idea
 *.iml
-
-# server file
-sever.js
-main.js
-socket.js
