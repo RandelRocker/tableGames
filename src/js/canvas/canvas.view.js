@@ -1,5 +1,5 @@
-define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
-	function ($, data, canvas) {
+define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu', 'draw'],
+	function ($, data, canvas, menu, draw) {
 		'use strict';
 
 		return $.extend(true, {
@@ -18,53 +18,64 @@ define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
 				grid: {
 					lineWidth: 3000,
 					lineHeight: 2520,
-					cellSize: 40,
+					cellSize: 50,
 					fill: 'black',
 					stroke: 'black',
 					strokeWidth: 1,
 					opacity: 0.2,
-					selectable: false
-				}
-			},
-
-			init: function() {
-				this.initStage();
-
-				if (!this.$stage) {
-					this._defaultStage();
-				}
-				this._bindEvents(this.$stage);
-				this._loadZoom();
-				data._loadPan(this.$stage);
-				this.$stage.renderAll();
-			},
-
-			_defaultStage: function() {
-				this.$stage = this.stage(this.stageId);
-				this.grid(this.$stage);
-
-				var rect = canvas.rect({
+					selectable: false,
+					contextMenu: false
+				},
+				default: {
 					left: 289,
 					top: 100,
 					fill: 'rgb(255,128,128)',
 					width: 90,
 					height: 150,
-					strokeWidth: 2,
+					contextMenu: true,
 					hasControls: false
-				});
+				}
+			},
+
+			init: function () {
+				this.initStage();
+
+				if (!this.$stage) {
+					this._defaultStage();
+				}
+				this._bindEvents();
+				this._loadZoom();
+				data._loadPan(this.$stage);
+				this.$stage.renderAll();
+			},
+
+			_defaultStage: function () {
+				var rect;
+
+				this.$stage = this.stage(this.stageId);
+				this.grid(this.$stage);
+				rect = canvas.rect(this.config.default);
 				this.$stage.add(rect);
 			},
 
 			_bindEvents: function (stage) {
 				var self = this;
 
+				self._preventRightClick();
 				self._stageEvents(stage);
 				self._zoomEvents();
 				self._panEvents();
 				self._socketEvents();
+				self._keyPressEvents();
 			},
 
-			_socketEvents: function() {
+			_keyPressEvents: function() {
+				$(document).on('keyup', function(e) {
+					draw._removeObject.call(draw, e)
+				});
+			},
+
+			_socketEvents: function () {
 				var self = this;
 
 				$(document).on('stage-response', function (event, data) {
@@ -72,8 +83,8 @@ define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
 				})
 			},
 
-			_stageEvents: function(stage) {
-				var self = this;
+			_stageEvents: function () {
+				var stage = this.$stage;
 
 				stage.on({
 					'object:modified': function (e) {
@@ -82,16 +93,34 @@ define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
 					},
 					'object:moving': function (e) {
 						e.target.opacity = 0.4;
+					},
+					'mouse:down': function (e) {
+						menu.menuOpen.call(menu, e);
+						draw._createObject.call(draw, e, stage);
+					},
+					'mouse:move': function (e) {
+						draw._drawObject.call(draw, e, stage);
+					},
+					'mouse:up': function(e){
+						draw.mouseDown = false;
+						draw.isDraw = false;
+						stage.selection = true;
 					}
 				});
 			},
 
-			_zoomEvents: function() {
+			_preventRightClick: function () {
+				$(document).on('contextmenu.right-click-menu', function (e) {
+					e.preventDefault();
+				});
+			},
+
+			_zoomEvents: function () {
 				$(window).on("DOMMouseScroll", this._mouseWheel.bind(this), false);
 				window.onmousewheel = document.onmousewheel = this._mouseWheel.bind(this);
 			},
 
-			_panEvents: function() {
+			_panEvents: function () {
 				$(window).on('mousedown.canvasPan', this._mouseDown.bind(this));
 
 				$(window).on('mouseup.canvasPan', function (e) {
@@ -146,7 +175,7 @@ define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
 					var zoom = this.$stage.getZoom() + direction / this.stageZoom;
 					this.$stage.setZoom(zoom, {x: event.clientX, y: event.clientY});
 					this.$stage.renderAll();
-					data._saveZoom(zoom)
+					data._saveZoom(zoom);
 					data._savePan(-this.$stage.viewportTransform[4], -this.$stage.viewportTransform[5])
 				}
 			}
