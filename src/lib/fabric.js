@@ -9470,6 +9470,11 @@ fabric.PatternBrush = fabric.util.createClass(fabric.PencilBrush, /** @lends fab
      * @param {Event} e Event object fired on mousedown
      */
     __onMouseDown: function (e) {
+      var target = this.findTarget(e),
+          pointer = this.getPointer(e, true);
+
+      this.fire('mouse:down', { target: target, e: e });
+      target && target.fire('mousedown', { e: e });
 
       // accept only left clicks
       var isLeftClick  = 'which' in e ? e.which === 1 : e.button === 1;
@@ -9486,9 +9491,6 @@ fabric.PatternBrush = fabric.util.createClass(fabric.PencilBrush, /** @lends fab
       if (this._currentTransform) {
         return;
       }
-
-      var target = this.findTarget(e),
-          pointer = this.getPointer(e, true);
 
       // save pointer for check in __onMouseUp event
       this._previousPointer = pointer;
@@ -9510,9 +9512,6 @@ fabric.PatternBrush = fabric.util.createClass(fabric.PencilBrush, /** @lends fab
       }
       // we must renderAll so that active image is placed on the top canvas
       shouldRender && this.renderAll();
-
-      this.fire('mouse:down', { target: target, e: e });
-      target && target.fire('mousedown', { e: e });
     },
 
     /**
@@ -11250,7 +11249,8 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
             fillRule:                 this.fillRule,
             globalCompositeOperation: this.globalCompositeOperation,
             selectable:               this.selectable,
-            hasControls:              this.hasControls
+            hasControls:              this.hasControls,
+            contextMenu:              this.contextMenu
           };
 
       if (!this.includeDefaultValues) {

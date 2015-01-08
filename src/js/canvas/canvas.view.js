@@ -1,5 +1,5 @@
-define(['jquery', 'data.class', 'canvas/canvas.class', ],
-	function ($, data, canvas) {
+define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu'],
+	function ($, data, canvas, menu) {
 		'use strict';
 
 		return $.extend(true, {
@@ -23,7 +23,8 @@ define(['jquery', 'data.class', 'canvas/canvas.class', ],
 					stroke: 'black',
 					strokeWidth: 1,
 					opacity: 0.2,
-					selectable: false
+					selectable: false,
+					contextMenu: false
 				}
 			},
 
@@ -37,6 +38,7 @@ define(['jquery', 'data.class', 'canvas/canvas.class', ],
 				this._loadZoom();
 				data._loadPan(this.$stage);
 				this.$stage.renderAll();
+				menu.initialize(this.$stage);
 			},
 
 			_defaultStage: function() {
@@ -50,6 +52,7 @@ define(['jquery', 'data.class', 'canvas/canvas.class', ],
 					width: 90,
 					height: 150,
 					strokeWidth: 2,
+					contextMenu: true,
 					hasControls: false
 				});
 				this.$stage.add(rect);
