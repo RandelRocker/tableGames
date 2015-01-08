@@ -1,8 +1,13 @@
 div
     #context-menu
         ul
-            li
-                a(href='javascript:void(0)') menu Item 1
+            li.has-sub-menu
+                a(href='javascript:void(0)') Create
+                ul.sub-menu
+                    li
+                        a(href='javascript:void(0)', data-type='rect') box
+                    li
+                        a(href='javascript:void(0)', data-type='circle') circle
             li
                 a(href='javascript:void(0)') menu Item 2
             li

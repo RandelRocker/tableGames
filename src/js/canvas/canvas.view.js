@@ -1,5 +1,5 @@
-define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu'],
-	function ($, data, canvas, menu) {
+define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu', 'draw'],
+	function ($, data, canvas, menu, draw) {
 		'use strict';
 
 		return $.extend(true, {
@@ -25,10 +25,19 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu'],
 					opacity: 0.2,
 					selectable: false,
 					contextMenu: false
+				},
+				default: {
+					left: 289,
+					top: 100,
+					fill: 'rgb(255,128,128)',
+					width: 90,
+					height: 150,
+					contextMenu: true,
+					hasControls: false
 				}
 			},
 
-			init: function() {
+			init: function () {
 				this.initStage();
 
 				if (!this.$stage) {
@@ -38,36 +47,28 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu'],
 				this._loadZoom();
 				data._loadPan(this.$stage);
 				this.$stage.renderAll();
-				menu.initialize(this.$stage);
 			},
 
-			_defaultStage: function() {
+			_defaultStage: function () {
+				var rect;
+
 				this.$stage = this.stage(this.stageId);
 				this.grid(this.$stage);
-
-				var rect = canvas.rect({
-					left: 289,
-					top: 100,
-					fill: 'rgb(255,128,128)',
-					width: 90,
-					height: 150,
-					strokeWidth: 2,
-					contextMenu: true,
-					hasControls: false
-				});
+				rect = canvas.rect(this.config.default);
 				this.$stage.add(rect);
 			},
 
 			_bindEvents: function (stage) {
 				var self = this;
 
+				self._preventRightClick();
 				self._stageEvents(stage);
 				self._zoomEvents();
 				self._panEvents();
 				self._socketEvents();
 			},
 
-			_socketEvents: function() {
+			_socketEvents: function () {
 				var self = this;
 
 				$(document).on('stage-response', function (event, data) {
@@ -75,7 +76,7 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu'],
 				})
 			},
 
-			_stageEvents: function(stage) {
+			_stageEvents: function (stage) {
 				stage.on({
 					'object:modified': function (e) {
 						e.target.opacity = 1;
@@ -83,16 +84,34 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu'],
 					},
 					'object:moving': function (e) {
 						e.target.opacity = 0.4;
+					},
+					'mouse:down': function (e) {
+						menu.menuOpen(e, menu);
+						draw._createObject(e, stage, draw);
+					},
+					'mouse:move': function (e) {
+						draw._drawObject(e, stage, draw);
+					},
+					'mouse:up': function(e){
+						draw.mouseDown = false;
+						draw.isDraw = false;
+						stage.selection = true;
 					}
 				});
 			},
 
-			_zoomEvents: function() {
+			_preventRightClick: function () {
+				$(document).on('contextmenu.right-click-menu', function (e) {
+					e.preventDefault();
+				});
+			},
+
+			_zoomEvents: function () {
 				$(window).on("DOMMouseScroll", this._mouseWheel.bind(this), false);
 				window.onmousewheel = document.onmousewheel = this._mouseWheel.bind(this);
 			},
 
-			_panEvents: function() {
+			_panEvents: function () {
 				$(window).on('mousedown.canvasPan', this._mouseDown.bind(this));
 
 				$(window).on('mouseup.canvasPan', function (e) {
@@ -147,7 +166,7 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu'],
 					var zoom = this.$stage.getZoom() + direction / this.stageZoom;
 					this.$stage.setZoom(zoom, {x: event.clientX, y: event.clientY});
 					this.$stage.renderAll();
-					data._saveZoom(zoom)
+					data._saveZoom(zoom);
 					data._savePan(-this.$stage.viewportTransform[4], -this.$stage.viewportTransform[5])
 				}
 			}

@@ -1,5 +1,5 @@
-define(['jquery', 'text!templates/menu.html'],
-	function($, menuHtml){
+define(['jquery', 'text!templates/menu.html', 'draw'],
+	function($, menuHtml, draw){
 		'use strict';
 
 		return {
@@ -8,33 +8,32 @@ define(['jquery', 'text!templates/menu.html'],
 			$stageMenu: $(menuHtml).find('#context-menu'),
 			$objectMenu: $(menuHtml).find('#object-menu'),
 
-			initialize: function(stage) {
-				this.$stage = stage;
+			init: function() {
 				this.bindEvents();
 			},
 
 			bindEvents: function() {
 				var self = this;
 
-				self.$stage.on({
-					'mouse:down': function (e) {
-						self.$stageMenu.remove();
-						self.$objectMenu.remove();
+				$(document).on('click', '#context-menu a', function(){
+					draw.isDraw = true;
+					draw.drawObject = $(this).data('type');
+					self.$stageMenu.remove();
+				})
+			},
 
-						if (e.e.button == 2) {
-							if (e.target && e.target.contextMenu && e.target.active) {
-								console.log(e.target);
-								self.$objectMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).appendTo('body');
-							} else {
-								self.$stageMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).appendTo('body');
-							}
-						}
+			menuOpen: function(e, self) {
+				self.$stageMenu.remove();
+				self.$objectMenu.remove();
+
+				if (e.e.button == 2) {
+					if (e.target && e.target.contextMenu && e.target.active) {
+						console.log(e.target);
+						self.$objectMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).appendTo('body');
+					} else {
+						self.$stageMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).appendTo('body');
 					}
-				});
-
-				$(document).on('contextmenu.right-click-menu', function(e) {
-					e.preventDefault();
-				});
+				}
 			}
 		}
 	});

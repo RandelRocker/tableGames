@@ -85,6 +85,12 @@ module.exports = function(grunt) {
 				cwd: 'src/server',
 				src: ['**'],
 				dest: './'
+			},
+			img: {
+				expand: true,
+				cwd: 'src/img',
+				src: ['**'],
+				dest: './app/img'
 			}
 		},
 
@@ -125,7 +131,7 @@ module.exports = function(grunt) {
 				limit: 10
 			},
 			build: {
-				tasks: ['less:main', 'jade:main', 'jade:js', 'copy:main', 'copy:lib', 'copy:server']
+				tasks: ['less:main', 'jade:main', 'jade:js', 'copy:main', 'copy:lib', 'copy:server', 'copy:img']
 			},
 			watch: {
 				tasks: ['watch:css', 'watch:html', 'watch:htmljs', 'watch:js', 'watch:lib', 'watch:serverJs']

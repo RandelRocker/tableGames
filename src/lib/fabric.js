@@ -6482,6 +6482,10 @@ fabric.Pattern = fabric.util.createClass(/** @lends fabric.Pattern.prototype */ 
         this.drawControls(canvasToDrawOn);
       }
 
+      for (var i = 0, len = this._objects.length; i < len; i++) {
+        this._objects[i].setCoords();
+      }
+
       this.fire('after:render');
 
       return this;

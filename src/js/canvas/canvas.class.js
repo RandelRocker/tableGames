@@ -36,6 +36,10 @@ define(['jquery', 'fabric', 'data.class'],
 				return new fabric.Rect(config);
 			},
 
+			circle: function(config) {
+				return new fabric.Circle(config);
+			},
+
 			line: function (coord, config) {
 				return new fabric.Line(coord, config);
 			}
