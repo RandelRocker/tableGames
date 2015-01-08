@@ -37,7 +37,6 @@ define(['jquery', 'data.class', 'canvas/canvas.class', ],
 				this._loadZoom();
 				data._loadPan(this.$stage);
 				this.$stage.renderAll();
-				console.log(menuHtml);
 			},
 
 			_defaultStage: function() {
