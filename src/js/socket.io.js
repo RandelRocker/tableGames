@@ -1,4 +1,4 @@
-define('socket.io', ['jquery', 'socket'],
+define(['jquery', 'socket'],
 	function($, io){
 		var socket = {
 			socket: io(),

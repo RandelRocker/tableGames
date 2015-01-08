@@ -1,4 +1,4 @@
-define('canvas/canvas.class', ['jquery', 'fabric', 'data.class'],
+define(['jquery', 'fabric', 'data.class'],
 	function ($, fabric, data) {
 		'use strict';
 

@@ -58,17 +58,12 @@ module.exports = function(grunt) {
 				dest: 'app',
 				ext: '.html'
 			},
-			templates: {
-				files: {
-					'app/js/templates.js': 'src/templates/**/*.jade'
-				},
-				options: {
-					amd: true,
-					client: true,
-					processName: function (name) {
-						return path.basename(name, '.jade');
-					}
-				}
+			js: {
+				expand: true,
+				cwd: 'src/js',
+				src: ['**/*.jade'],
+				dest: 'app/js',
+				ext: '.html'
 			}
 		},
 
@@ -102,6 +97,10 @@ module.exports = function(grunt) {
 				files: ['src/html/**/*.jade'],
 				tasks: ['jade:main']
 			},
+			htmljs: {
+				files: ['src/js/**/*.jade'],
+				tasks: ['jade:js']
+			},
 			templates: {
 				files: ['src/templates/**/*.jade'],
 				tasks: ['jade:templates']
@@ -126,10 +125,10 @@ module.exports = function(grunt) {
 				limit: 10
 			},
 			build: {
-				tasks: ['less:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib', 'copy:server']
+				tasks: ['less:main', 'jade:main', 'jade:js', 'copy:main', 'copy:lib', 'copy:server']
 			},
 			watch: {
-				tasks: ['watch:css', 'watch:html', 'watch:templates', 'watch:js', 'watch:lib', 'watch:serverJs']
+				tasks: ['watch:css', 'watch:html', 'watch:htmljs', 'watch:js', 'watch:lib', 'watch:serverJs']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'execute:target']

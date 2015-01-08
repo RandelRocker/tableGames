@@ -1,4 +1,4 @@
-define('data.class', ['jquery'],
+define(['jquery'],
 	function($){
 		'use strict';
 

@@ -1,4 +1,4 @@
-define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
+define(['jquery', 'data.class', 'canvas/canvas.class', ],
 	function ($, data, canvas) {
 		'use strict';
 
@@ -18,7 +18,7 @@ define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
 				grid: {
 					lineWidth: 3000,
 					lineHeight: 2520,
-					cellSize: 40,
+					cellSize: 50,
 					fill: 'black',
 					stroke: 'black',
 					strokeWidth: 1,
@@ -37,6 +37,7 @@ define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
 				this._loadZoom();
 				data._loadPan(this.$stage);
 				this.$stage.renderAll();
+				console.log(menuHtml);
 			},
 
 			_defaultStage: function() {
@@ -73,8 +74,6 @@ define('canvas/canvas.view', ['jquery', 'data.class', 'canvas/canvas.class'],
 			},
 
 			_stageEvents: function(stage) {
-				var self = this;
-
 				stage.on({
 					'object:modified': function (e) {
 						e.target.opacity = 1;
