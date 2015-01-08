@@ -1,4 +1,4 @@
-define('canvas/canvas.class', ['jquery', 'fabric', 'data.class'],
+define(['jquery', 'fabric', 'data.class'],
 	function ($, fabric, data) {
 		'use strict';
 
@@ -34,6 +34,10 @@ define('canvas/canvas.class', ['jquery', 'fabric', 'data.class'],
 
 			rect: function (config) {
 				return new fabric.Rect(config);
+			},
+
+			circle: function(config) {
+				return new fabric.Circle(config);
 			},
 
 			line: function (coord, config) {

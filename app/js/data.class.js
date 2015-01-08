@@ -1,4 +1,4 @@
-define('data.class', ['jquery'],
+define(['jquery'],
 	function($){
 		'use strict';
 
@@ -27,9 +27,6 @@ define('data.class', ['jquery'],
 					stage.viewportTransform[4] = x;
 					stage.viewportTransform[5] = y;
 					stage.renderAll();
-					for (var i = 0, len = stage._objects.length; i < len; i++) {
-						stage._objects[i].setCoords();
-					}
 				}
 			},
 

@@ -1,4 +1,4 @@
-define('ui',['jquery'],
+define(['jquery'],
 	function($){
 		return {
 			$elements : {},
