@@ -43,7 +43,7 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu', 'draw'],
 				if (!this.$stage) {
 					this._defaultStage();
 				}
-				this._bindEvents(this.$stage);
+				this._bindEvents();
 				this._loadZoom();
 				data._loadPan(this.$stage);
 				this.$stage.renderAll();
@@ -83,7 +83,9 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu', 'draw'],
 				})
 			},
 
-			_stageEvents: function (stage) {
+			_stageEvents: function () {
+				var stage = this.$stage;
+
 				stage.on({
 					'object:modified': function (e) {
 						e.target.opacity = 1;
