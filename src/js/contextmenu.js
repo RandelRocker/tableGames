@@ -8,7 +8,8 @@ define(['jquery', 'text!templates/menu.html', 'draw'],
 			$stageMenu: $(menuHtml).find('#context-menu'),
 			$objectMenu: $(menuHtml).find('#object-menu'),
 
-			init: function() {
+			init: function(config) {
+				$.extend(true, this, config);
 				this.bindEvents();
 			},
 
@@ -22,7 +23,9 @@ define(['jquery', 'text!templates/menu.html', 'draw'],
 				})
 			},
 
-			menuOpen: function(e, self) {
+			menuOpen: function(e) {
+				var self = this;
+
 				self.$stageMenu.remove();
 				self.$objectMenu.remove();
 

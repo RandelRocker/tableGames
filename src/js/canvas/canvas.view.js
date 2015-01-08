@@ -66,6 +66,13 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu', 'draw'],
 				self._zoomEvents();
 				self._panEvents();
 				self._socketEvents();
+				self._keyPressEvents();
+			},
+
+			_keyPressEvents: function() {
+				$(document).on('keyup', function(e) {
+					draw._removeObject.call(draw, e)
+				});
 			},
 
 			_socketEvents: function () {
@@ -86,11 +93,11 @@ define(['jquery', 'data.class', 'canvas/canvas.class', 'contextmenu', 'draw'],
 						e.target.opacity = 0.4;
 					},
 					'mouse:down': function (e) {
-						menu.menuOpen(e, menu);
-						draw._createObject(e, stage, draw);
+						menu.menuOpen.call(menu, e);
+						draw._createObject.call(draw, e, stage);
 					},
 					'mouse:move': function (e) {
-						draw._drawObject(e, stage, draw);
+						draw._drawObject.call(draw, e, stage);
 					},
 					'mouse:up': function(e){
 						draw.mouseDown = false;

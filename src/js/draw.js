@@ -22,20 +22,44 @@ define(['jquery', 'canvas/canvas.class'],
 				}
 			},
 
-			_createObject: function(e, stage, self) {
+			init: function(config) {
+				$.extend(true, this, config)
+			},
+
+			_removeObject: function(e) {
+				if (e.keyCode == 46) {
+					var obj = [];
+
+					for (var i = 0, len = this.$stage._objects.length; i < len; i++) {
+						if(this.$stage._objects[i].active) {
+							obj.push(this.$stage._objects[i]);
+						}
+					}
+
+					obj.forEach(function(key){
+						key.remove();
+					});
+
+					this.$stage.renderAll();
+				}
+			},
+
+			_createObject: function(e) {
+				var self = this;
+
 				if (!self.isDraw || e.e.button !== 0) {
 					return;
 				}
 
 				self.mouseDown = true;
-				stage.selection = false;
-				self._getStartPoint(stage, e.e);
+				self.$stage.selection = false;
+				self._getStartPoint(e.e);
 				self._getObject();
-				stage.add(self.object);
+				self.$stage.add(self.object);
 			},
 
-			_getStartPoint: function(stage, e) {
-				var point = stage.getPointer(e);
+			_getStartPoint: function(e) {
+				var point = this.$stage.getPointer(e);
 				this.startX = point.x;
 				this.startY = point.y;
 			},
@@ -72,8 +96,9 @@ define(['jquery', 'canvas/canvas.class'],
 				return {radius: radius, width: -x, height: -y};
 			},
 
-			_drawObject: function (e, stage, self) {
-				var size;
+			_drawObject: function (e, stage) {
+				var self = this,
+					size;
 
 				if (self.isDraw) {
 					stage.setCursor('crosshair');
