@@ -16,7 +16,8 @@
     "grunt-execute": "latest"
   },
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "postinstall": "grunt build"
   },
   "engines": {
     "node": ">= 0.6.0",
@@ -26,7 +27,16 @@
     "express": "~4.9.x",
     "grunt": "latest",
     "grunt-cli": "latest",
-    "socket.io": "latest"
+    "socket.io": "latest",
+    "grunt-concurrent": "latest",
+    "grunt-contrib-clean": "latest",
+    "grunt-contrib-connect": "latest",
+    "grunt-contrib-copy": "latest",
+    "grunt-contrib-jade": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-less": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-execute": "latest"
   },
   "main": "main.js"
 }
