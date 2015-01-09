@@ -18,6 +18,7 @@ define(['jquery', 'canvas/canvas.class', 'data.class'],
 					selectable: true,
 					contextMenu: true,
 					hasControls: false,
+					centeredScaling: false,
 					fill: 'rgb(255,128,128)'
 				}
 			},
@@ -39,9 +40,9 @@ define(['jquery', 'canvas/canvas.class', 'data.class'],
 			_contextMenuEvents: function() {
 				var self = this;
 
-				$(document).on('click', '#context-menu .create li', function(){
+				$(document).on('createObject', function(e, data){
 					self.isDraw = true;
-					self.drawObject = $(this).data('type');
+					self.drawObject = data.type;
 				});
 			},
 

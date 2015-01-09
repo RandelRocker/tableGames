@@ -10,7 +10,7 @@ define(['jquery', 'canvas/canvas.class', 'canvas/canvas.view', 'data.class'],
 					width: $(window).innerWidth(),
 					height: $(window).innerHeight(),
 					hoverCursor: 'pointer',
-					centeredScaling: true,
+					centeredScaling: false,
 					selection: true
 				},
 				grid: {
