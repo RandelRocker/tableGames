@@ -1,5 +1,5 @@
-define(['jquery', 'canvas/canvas.class', 'data.class'],
-	function ($, canvas, data) {
+define(['jquery', 'canvas/canvas.class', 'canvas/canvas.view', 'data.class'],
+	function ($, canvas, canvasView, data) {
 		'use strict';
 
 		return $.extend(true, {
@@ -41,6 +41,7 @@ define(['jquery', 'canvas/canvas.class', 'data.class'],
 				if (!this.$stage) {
 					this._defaultStage();
 				}
+				canvasView.init({$stage: this.$stage});
 			},
 
 			_defaultStage: function () {

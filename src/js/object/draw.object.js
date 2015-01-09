@@ -2,7 +2,7 @@ define(['jquery', 'canvas/canvas.class', 'data.class'],
 	function ($, canvas, data) {
 		'use strict';
 
-		return {
+		return $.extend(true, {
 			isDraw: false,
 			drawObject: 'none',
 			object: null,
@@ -75,19 +75,14 @@ define(['jquery', 'canvas/canvas.class', 'data.class'],
 
 			_removeObject: function(e) {
 				if (e.keyCode == 46) {
-					var obj = [];
-
-					for (var i = 0, len = this.$stage._objects.length; i < len; i++) {
-						if(this.$stage._objects[i].active) {
-							obj.push(this.$stage._objects[i]);
-						}
-					}
+					var obj = this._getSelectedObjects();
 
 					obj.forEach(function(key){
 						key.remove();
 					});
 
 					this.$stage.renderAll();
+					data._saveStage(this.$stage);
 				}
 			},
 
@@ -112,7 +107,7 @@ define(['jquery', 'canvas/canvas.class', 'data.class'],
 			},
 
 			_getObject: function() {
-				this.object = canvas[this.drawObject](
+				this.object = this[this.drawObject](
 					$.extend(true, {
 						left: this.startX,
 						top: this.startY
@@ -158,5 +153,5 @@ define(['jquery', 'canvas/canvas.class', 'data.class'],
 				self._setSize(size);
 				self.$stage.renderAll();
 			}
-		}
+		}, canvas);
 	});

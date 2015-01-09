@@ -16,6 +16,18 @@ define(['jquery', 'fabric', 'data.class'],
 				}
 			},
 
+			_getSelectedObjects: function() {
+				var obj =[];
+
+				for (var i = 0, len = this.$stage._objects.length; i < len; i++) {
+					if(this.$stage._objects[i].active) {
+						obj.push(this.$stage._objects[i]);
+					}
+				}
+
+				return obj;
+			},
+
 			stage: function (canvasId, config) {
 				config = $.extend(true, this.config.stage, config);
 				return new fabric.Canvas(canvasId, config);
