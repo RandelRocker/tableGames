@@ -3,17 +3,6 @@ define(['jquery', 'fabric', 'data.class'],
 		'use strict';
 
 		return {
-			stageId: 'container',
-			$stage: null,
-
-			initStage: function () {
-				var stageJSON = data.get('stage');
-
-				if (stageJSON) {
-					this.$stage = this.stage(this.stageId);
-					this._loadStage(stageJSON);
-				}
-			},
 
 			_loadStage: function(stageJSON) {
 				this.$stage.loadFromJSON(stageJSON);
@@ -25,6 +14,18 @@ define(['jquery', 'fabric', 'data.class'],
 				if (zoom) {
 					this.$stage.setZoom(zoom);
 				}
+			},
+
+			_getSelectedObjects: function() {
+				var obj =[];
+
+				for (var i = 0, len = this.$stage._objects.length; i < len; i++) {
+					if(this.$stage._objects[i].active) {
+						obj.push(this.$stage._objects[i]);
+					}
+				}
+
+				return obj;
 			},
 
 			stage: function (canvasId, config) {
