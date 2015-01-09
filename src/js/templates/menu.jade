@@ -3,10 +3,10 @@ div
         ul
             li.has-sub-menu
                 a(href='javascript:void(0)') Create
-                ul.sub-menu.create
-                    li(data-type='rect')
+                ul.sub-menu
+                    li(data-type='rect' data-action='create')
                         a(href='javascript:void(0)') box
-                    li(data-type='circle')
+                    li(data-type='circle' data-action='create')
                         a(href='javascript:void(0)') circle
             li
                 a(href='javascript:void(0)') menu Item 2
@@ -15,7 +15,7 @@ div
 
     #object-menu
         ul
-            li(data-type='edit')
+            li(data-action='edit' data-controls='')
                 a(href='javascript:void(0)') edit
             li
                 a(href='javascript:void(0)') object Item 2

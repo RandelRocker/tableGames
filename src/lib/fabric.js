@@ -11254,7 +11254,8 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
             globalCompositeOperation: this.globalCompositeOperation,
             selectable:               this.selectable,
             hasControls:              this.hasControls,
-            contextMenu:              this.contextMenu
+            contextMenu:              this.contextMenu,
+            centeredScaling:          this.centeredScaling
           };
 
       if (!this.includeDefaultValues) {
