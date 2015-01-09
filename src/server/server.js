@@ -33,7 +33,7 @@ module.exports = function () {
 		 */
 		concatDir: function () {
 			var self = this,
-				dirs = ['/app/', '/app/css/', '/app/js/', '/app/js/canvas/', '/app/lib/', '/app/js/templates/'];
+				dirs = ['/app/', '/app/css/', '/app/js/', '/app/js/canvas/', '/app/js/object/', '/app/lib/', '/app/js/templates/'];
 
 			dirs.forEach(function(key) {
 				self.readDir(key);
@@ -95,7 +95,7 @@ module.exports = function () {
 		start: function () {
 			//  Start the app on the specific interface (and port).
 			http.listen(this.port, function () {
-				console.log('Node server started on %s:%d ...' + this.port);
+				console.log('Node server started');
 			});
 		}
 	}

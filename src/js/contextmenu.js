@@ -1,5 +1,5 @@
-define(['jquery', 'text!templates/menu.html', 'draw'],
-	function($, menuHtml, draw){
+define(['jquery', 'text!templates/menu.html'],
+	function($, menuHtml){
 		'use strict';
 
 		return {
@@ -10,31 +10,46 @@ define(['jquery', 'text!templates/menu.html', 'draw'],
 
 			init: function(config) {
 				$.extend(true, this, config);
+				this.$stageMenu.appendTo('body');
+				this.$objectMenu.appendTo('body');
 				this.bindEvents();
 			},
 
 			bindEvents: function() {
-				var self = this;
+				var self = this,
+					stage = this.$stage;
 
-				$(document).on('click', '#context-menu a', function(){
-					draw.isDraw = true;
-					draw.drawObject = $(this).data('type');
-					self.$stageMenu.remove();
-				})
+				self._preventRightClick();
+
+				$(document).on('click', '#context-menu li', function(){
+					self.$stageMenu.hide();
+				});
+
+				stage.on({
+					'mouse:down': function (e) {
+						self.menuOpen(e);
+					}
+				});
+			},
+
+			_preventRightClick: function () {
+				$(document).on('contextmenu.right-click-menu', function (e) {
+					e.preventDefault();
+				});
 			},
 
 			menuOpen: function(e) {
 				var self = this;
 
-				self.$stageMenu.remove();
-				self.$objectMenu.remove();
+				self.$stageMenu.hide();
+				self.$objectMenu.hide();
 
 				if (e.e.button == 2) {
 					if (e.target && e.target.contextMenu && e.target.active) {
 						console.log(e.target);
-						self.$objectMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).appendTo('body');
+						self.$objectMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).show();
 					} else {
-						self.$stageMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).appendTo('body');
+						self.$stageMenu.css({'top': e.e.clientY, 'left': e.e.clientX}).show();
 					}
 				}
 			}

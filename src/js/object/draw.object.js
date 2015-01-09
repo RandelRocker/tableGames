@@ -1,8 +1,8 @@
-define(['jquery', 'canvas/canvas.class'],
-	function ($, canvas) {
+define(['jquery', 'canvas/canvas.class', 'data.class'],
+	function ($, canvas, data) {
 		'use strict';
 
-		return {
+		return $.extend(true, {
 			isDraw: false,
 			drawObject: 'none',
 			object: null,
@@ -23,24 +23,66 @@ define(['jquery', 'canvas/canvas.class'],
 			},
 
 			init: function(config) {
-				$.extend(true, this, config)
+				$.extend(true, this, config);
+
+				this._bindEvents();
+			},
+
+			_bindEvents: function() {
+				var self = this;
+
+				self._keyPressEvents();
+				self._stageEvents();
+				self._contextMenuEvents();
+			},
+
+			_contextMenuEvents: function() {
+				var self = this;
+
+				$(document).on('click', '#context-menu .create li', function(){
+					self.isDraw = true;
+					self.drawObject = $(this).data('type');
+				});
+			},
+
+			_keyPressEvents: function() {
+				var self = this;
+
+				$(document).on('keyup', function(e) {
+					self._removeObject(e)
+				});
+			},
+
+			_stageEvents: function() {
+				var self = this,
+					stage = this.$stage;
+
+				stage.on({
+					'mouse:down': function (e) {
+						self._createObject(e);
+					},
+					'mouse:move': function (e) {
+						self._drawObject(e);
+					},
+					'mouse:up': function(e){
+						self.mouseDown = false;
+						self.isDraw = false;
+						stage.selection = true;
+						data._saveStage(self.$stage);
+					}
+				});
 			},
 
 			_removeObject: function(e) {
 				if (e.keyCode == 46) {
-					var obj = [];
-
-					for (var i = 0, len = this.$stage._objects.length; i < len; i++) {
-						if(this.$stage._objects[i].active) {
-							obj.push(this.$stage._objects[i]);
-						}
-					}
+					var obj = this._getSelectedObjects();
 
 					obj.forEach(function(key){
 						key.remove();
 					});
 
 					this.$stage.renderAll();
+					data._saveStage(this.$stage);
 				}
 			},
 
@@ -65,7 +107,7 @@ define(['jquery', 'canvas/canvas.class'],
 			},
 
 			_getObject: function() {
-				this.object = canvas[this.drawObject](
+				this.object = this[this.drawObject](
 					$.extend(true, {
 						left: this.startX,
 						top: this.startY
@@ -85,8 +127,8 @@ define(['jquery', 'canvas/canvas.class'],
 				}
 			},
 
-			_getSize: function(stage, e) {
-				var point = stage.getPointer(e),
+			_getSize: function(e) {
+				var point = this.$stage.getPointer(e),
 					rx = Math.abs(this.startX - point.x),
 					ry = Math.abs(this.startY - point.y),
 					x = this.startX - point.x,
@@ -96,20 +138,20 @@ define(['jquery', 'canvas/canvas.class'],
 				return {radius: radius, width: -x, height: -y};
 			},
 
-			_drawObject: function (e, stage) {
+			_drawObject: function (e) {
 				var self = this,
 					size;
 
 				if (self.isDraw) {
-					stage.setCursor('crosshair');
+					self.$stage.setCursor('crosshair');
 				}
 
 				if (!this.mouseDown || !self.isDraw || !self.object) {
 					return;
 				}
-				size = self._getSize(stage, e.e);
+				size = self._getSize(e.e);
 				self._setSize(size);
-				stage.renderAll();
+				self.$stage.renderAll();
 			}
-		}
+		}, canvas);
 	});

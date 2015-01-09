@@ -1,6 +1,6 @@
-define(['jquery', 'socket.io', 'canvas/canvas.view', 'contextmenu', 'draw'],
-	function($, socket, canvas, menu, draw){
-		canvas.init();
-		menu.init({$stage: canvas.$stage});
-		draw.init({$stage: canvas.$stage});
+define(['jquery', 'socket.io', 'canvas/canvas.stage', 'canvas/canvas.view', 'contextmenu', 'object/draw.object'],
+	function($, socket, stage, canvas, menu, draw){
+		stage.init();
+		menu.init({$stage: stage.$stage});
+		draw.init({$stage: stage.$stage});
 	});
