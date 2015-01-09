@@ -3,17 +3,6 @@ define(['jquery', 'fabric', 'data.class'],
 		'use strict';
 
 		return {
-			stageId: 'container',
-			$stage: null,
-
-			initStage: function () {
-				var stageJSON = data.get('stage');
-
-				if (stageJSON) {
-					this.$stage = this.stage(this.stageId);
-					this._loadStage(stageJSON);
-				}
-			},
 
 			_loadStage: function(stageJSON) {
 				this.$stage.loadFromJSON(stageJSON);

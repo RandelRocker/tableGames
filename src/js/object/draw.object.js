@@ -1,5 +1,5 @@
-define(['jquery', 'canvas/canvas.class'],
-	function ($, canvas) {
+define(['jquery', 'canvas/canvas.class', 'data.class'],
+	function ($, canvas, data) {
 		'use strict';
 
 		return {
@@ -23,7 +23,54 @@ define(['jquery', 'canvas/canvas.class'],
 			},
 
 			init: function(config) {
-				$.extend(true, this, config)
+				$.extend(true, this, config);
+
+				this._bindEvents();
+			},
+
+			_bindEvents: function() {
+				var self = this;
+
+				self._keyPressEvents();
+				self._stageEvents();
+				self._contextMenuEvents();
+			},
+
+			_contextMenuEvents: function() {
+				var self = this;
+
+				$(document).on('click', '#context-menu .create li', function(){
+					self.isDraw = true;
+					self.drawObject = $(this).data('type');
+				});
+			},
+
+			_keyPressEvents: function() {
+				var self = this;
+
+				$(document).on('keyup', function(e) {
+					self._removeObject(e)
+				});
+			},
+
+			_stageEvents: function() {
+				var self = this,
+					stage = this.$stage;
+
+				stage.on({
+					'mouse:down': function (e) {
+						self._createObject(e);
+					},
+					'mouse:move': function (e) {
+						self._drawObject(e);
+					},
+					'mouse:up': function(e){
+						self.mouseDown = false;
+						self.isDraw = false;
+						stage.selection = true;
+						data._saveStage(self.$stage);
+					}
+				});
 			},
 
 			_removeObject: function(e) {
@@ -85,8 +132,8 @@ define(['jquery', 'canvas/canvas.class'],
 				}
 			},
 
-			_getSize: function(stage, e) {
-				var point = stage.getPointer(e),
+			_getSize: function(e) {
+				var point = this.$stage.getPointer(e),
 					rx = Math.abs(this.startX - point.x),
 					ry = Math.abs(this.startY - point.y),
 					x = this.startX - point.x,
@@ -96,20 +143,20 @@ define(['jquery', 'canvas/canvas.class'],
 				return {radius: radius, width: -x, height: -y};
 			},
 
-			_drawObject: function (e, stage) {
+			_drawObject: function (e) {
 				var self = this,
 					size;
 
 				if (self.isDraw) {
-					stage.setCursor('crosshair');
+					self.$stage.setCursor('crosshair');
 				}
 
 				if (!this.mouseDown || !self.isDraw || !self.object) {
 					return;
 				}
-				size = self._getSize(stage, e.e);
+				size = self._getSize(e.e);
 				self._setSize(size);
-				stage.renderAll();
+				self.$stage.renderAll();
 			}
 		}
 	});

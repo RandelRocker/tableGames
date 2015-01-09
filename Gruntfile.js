@@ -156,5 +156,4 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['clean:main', 'concurrent:build', 'concurrent:run']);
 	grunt.registerTask('cleanAll', 'clean:all');
 	grunt.registerTask('build', 'concurrent:build');
-	grunt.registerTask('heroku', 'concurrent:build');
 };
