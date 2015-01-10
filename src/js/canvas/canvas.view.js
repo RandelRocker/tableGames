@@ -91,6 +91,8 @@ define(['jquery', 'data.class', 'canvas/canvas.class'],
 					event.returnValue = false;
 
 					var zoom = this.$stage.getZoom() + direction / this.stageZoom;
+						zoom = zoom < 0.1 ? 0.1 : zoom;
+
 					this.$stage.setZoom(zoom, {x: event.clientX, y: event.clientY});
 					this.$stage.renderAll();
 					data._saveZoom(zoom);

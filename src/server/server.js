@@ -33,7 +33,13 @@ module.exports = function () {
 		 */
 		concatDir: function () {
 			var self = this,
-				dirs = ['/app/', '/app/css/', '/app/js/', '/app/js/canvas/', '/app/js/object/', '/app/lib/', '/app/js/templates/'];
+				dirs = ['/app/',
+						'/app/css/',
+						'/app/js/',
+						'/app/js/canvas/',
+						'/app/js/object/',
+						'/app/lib/',
+						'/app/js/templates/'];
 
 			dirs.forEach(function(key) {
 				self.readDir(key);

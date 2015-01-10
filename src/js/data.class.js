@@ -3,12 +3,18 @@ define(['jquery'],
 		'use strict';
 
 		return {
+			response: '',
+
 			set: function(key, value) {
 				localStorage.setItem(key, value);
 			},
 
 			get: function(key) {
 				return localStorage.getItem(key);
+			},
+
+			del: function(key) {
+				localStorage.removeItem(key);
 			},
 
 			_saveZoom: function(value) {
