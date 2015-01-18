@@ -11,7 +11,7 @@ define(['jquery', 'socket'],
 				});
 
 				self.socket.on('stage', function(msg){
-					$(document).triggerHandler('stage-response', {json: msg});
+					$('body').triggerHandler('stage-response', {json: msg});
 				});
 			}
 		};
