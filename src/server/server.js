@@ -38,6 +38,9 @@ module.exports = function () {
 						'/app/js/',
 						'/app/js/canvas/',
 						'/app/js/object/',
+						'/app/js/collection/',
+						'/app/js/model/',
+						'/app/js/view/',
 						'/app/lib/',
 						'/app/js/templates/'];
 

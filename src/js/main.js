@@ -1,7 +1,4 @@
-define(['jquery', 'socket.io', 'canvas/canvas.stage', 'canvas/canvas.view', 'contextmenu', 'object/object.draw', 'object/object.edit'],
-	function($, socket, stage, canvas, menu, draw, edit){
-		stage.init();
-		menu.init({$stage: stage.$stage});
-		draw.init({$stage: stage.$stage});
-		edit.init({$stage: stage.$stage});
+define(['jquery', 'socket.io', 'view/view.stage', 'view/view.object', 'contextmenu', 'object/object.draw', 'object/object.edit', 'view/view.main'],
+	function($, socket, StageView, ObjectView, menu, draw, edit, MainView){
+		var app = new MainView();
 	});

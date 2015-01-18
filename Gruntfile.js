@@ -5,15 +5,6 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-		/*connect: {
-			main: {
-				options: {
-					port: 1000,
-					keepalive: true,
-					base: 'app'
-				}
-			}
-		},*/
 		execute: {
 			target: {
 				src: ['main.js']
@@ -71,7 +62,7 @@ module.exports = function(grunt) {
 			main: {
 				expand: true,
 				cwd: 'src/js',
-				src: ['**/*.js'],
+				src: ['**/**/*.js'],
 				dest: 'app/js'
 			},
 			lib: {
