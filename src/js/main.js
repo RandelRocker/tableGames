@@ -1,4 +1,6 @@
-define(['jquery', 'socket.io', 'view/view.stage', 'view/view.object', 'contextmenu', 'object/object.draw', 'object/object.edit', 'view/view.main'],
-	function($, socket, StageView, ObjectView, menu, draw, edit, MainView){
+define(['jquery', 'view/view.main'],
+	function($, MainView){
+		'use strict';
+
 		var app = new MainView();
 	});

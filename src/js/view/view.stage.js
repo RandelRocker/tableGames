@@ -1,14 +1,10 @@
-define(['jquery', 'model/model.stage', 'fabric', 'socket.io'],
-	function ($, Stage, fabric, io) {
+define(['jquery', 'model/model.stage', 'fabric', 'view/view.socket'],
+	function ($, Stage, fabric, socket) {
 		'use strict';
 
 		var StageView = Backbone.View.extend({
 
 			el: 'body',
-
-			events: {
-				'stage-response': '_socketEvents'
-			},
 
 			initialize: function(){
 				this.model = new Stage();
@@ -22,8 +18,8 @@ define(['jquery', 'model/model.stage', 'fabric', 'socket.io'],
 				this.listenTo(this.model.$stage, 'object:moving', this._onObjMove.bind(this));
 				this.listenTo(this.model.$stage, 'mouse:move', this._onMouseMove.bind(this));
 				this.listenTo(this.model.$stage, 'mouse:down', this._onMouseDown.bind(this));
-				this.listenTo(this.model, 'stage:save', this._saveStage.bind(this));
-				this.listenTo(this.model, 'change:responseJSON', this._loadStage.bind(this));
+				this.listenTo(this.model, 'save:stage', this._saveStage.bind(this));
+				this.listenTo(socket.model, 'response:stage', this._loadStage.bind(this));
 			},
 
 			render: function() {
@@ -37,12 +33,11 @@ define(['jquery', 'model/model.stage', 'fabric', 'socket.io'],
 			_saveStage: function () {
 				var stageJson = JSON.stringify(this.model.$stage.toJSON());
 
-				localStorage.setItem('stage', stageJson);
-				io.socket.emit('stage', stageJson);
+				socket.model.set({'requestJson': stageJson});
 			},
 
-			_loadStage: function(model) {
-				this.model.$stage.loadFromJSON(model.get('responseJSON'));
+			_loadStage: function() {
+				this.model.$stage.loadFromJSON(socket.model.get('responseJson'));
 				this.render();
 			},
 
@@ -69,11 +64,6 @@ define(['jquery', 'model/model.stage', 'fabric', 'socket.io'],
 				}
 			},
 
-			_socketEvents: function(event, data) {
-				this.model.set({'responseJSON': data.json});
-				this.render();
-			},
-
 			_onMouseDown: function (e) {
 				if (e.e.button != 1) {
 					return;
@@ -97,7 +87,7 @@ define(['jquery', 'model/model.stage', 'fabric', 'socket.io'],
 
 			_onObjModified: function(e) {
 				e.target.opacity = 1;
-				this.model.trigger('stage:save');
+				this.model.trigger('save:stage');
 			},
 
 			_onObjMove: function(e) {

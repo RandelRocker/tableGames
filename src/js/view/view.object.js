@@ -12,6 +12,9 @@ define(['jquery', 'model/model.object', 'fabric'],
 			},
 
 			render: function() {
+				if (this.model.get('type') === 'Line') {
+					return new fabric[this.model.get('type')](this.model.get('coord'), this.model.toJSON());
+				}
 				return new fabric[this.model.get('type')](this.model.toJSON());
 			}
 		});

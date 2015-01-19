@@ -1,5 +1,5 @@
-define(['jquery', 'view/view.stage', 'view/view.object', 'contextmenu', 'object/object.draw', 'object/object.edit'],
-	function ($, StageView, ObjView, menu, draw, edit) {
+define(['jquery', 'view/view.stage', 'view/view.object', 'view/view.socket', 'contextmenu', 'object/object.draw', 'object/object.edit'],
+	function ($, StageView, ObjView, socket, menu, draw, edit) {
 		'use strict';
 
 		var MainView = Backbone.View.extend({
@@ -30,9 +30,10 @@ define(['jquery', 'view/view.stage', 'view/view.object', 'contextmenu', 'object/
 				var stageJSON = localStorage.getItem('stage');
 
 				if (stageJSON) {
-					this.model.set({responseJSON : stageJSON});
+					socket.model.set({responseJson: stageJSON});
 					return;
 				}
+				this.grid();
 
 				var rect = new ObjView({
 					type: 'Rect',
@@ -47,16 +48,27 @@ define(['jquery', 'view/view.stage', 'view/view.object', 'contextmenu', 'object/
 
 			grid: function (stage, config) {
 
-				config = $.extend(true, this.config.grid, config);
+				config = $.extend(true, {
+					type: "Line",
+					lineWidth: 3000,
+					lineHeight: 2520,
+					cellSize: 50,
+					fill: 'black',
+					stroke: 'black',
+					strokeWidth: 1,
+					opacity: 0.2,
+					selectable: false,
+					contextMenu: false
+				}, config);
 
 				for (var i = 0; i < config.lineWidth + 1; i += config.cellSize) {
-					var hLine = this.line([i, 0, i, config.lineHeight], config);
-					stage.add(hLine);
+					var hLine = new ObjView($.extend(true, {coord: [i, 0, i, config.lineHeight]}, config));
+					this.model.$stage.add(hLine.render());
 				}
 
 				for (var j = 0; j < config.lineHeight + 1; j += config.cellSize) {
-					var vLine = this.line([0, j, config.lineWidth, j], config);
-					stage.add(vLine);
+					var vLine = new ObjView($.extend(true, {coord: [0, j, config.lineWidth, j]}, config));
+					this.model.$stage.add(vLine.render());
 				}
 			}
 
