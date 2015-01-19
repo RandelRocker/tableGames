@@ -8,10 +8,11 @@ define(['jquery', 'model/model.socket'],
 
 			initialize: function(){
 				this.model = socket;
+				this.io = this.model.get('socket');
 				this.listenTo(this.model, 'change:requestJson', this._sendStageJson.bind(this));
 				this.listenTo(this.model, 'change:status', this._checkTempJson.bind(this));
 				this.listenTo(this.model, 'change:responseJson', this._triggerResponseEvent.bind(this));
-				this.listenTo(this.model.get('socket'), 'stage', this._saveStageJson.bind(this));
+				this.listenTo(this.io, 'stage', this._saveStageJson.bind(this));
 			},
 
 			render: function() {
@@ -20,7 +21,7 @@ define(['jquery', 'model/model.socket'],
 
 			_sendStageJson: function() {
 				localStorage.setItem('stage', this.model.get('requestJson'));
-				this.model.get('socket').emit('stage', this.model.get('requestJson'));
+				this.io.emit('stage', this.model.get('requestJson'));
 			},
 
 			_saveStageJson: function(msg) {

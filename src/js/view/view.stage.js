@@ -88,10 +88,12 @@ define(['jquery', 'model/model.stage', 'fabric', 'view/view.socket'],
 			_onObjModified: function(e) {
 				e.target.opacity = 1;
 				this.model.trigger('save:stage');
+				socket._toggleStatus();
 			},
 
 			_onObjMove: function(e) {
 				e.target.opacity = 0.4;
+				socket._toggleStatus();
 			},
 
 			_onMouseWheel: function (e) {
